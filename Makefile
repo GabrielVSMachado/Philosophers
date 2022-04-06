@@ -8,11 +8,7 @@ else
 	CC := clang
 endif
 
-override LIBFTDIR = libft
-override LIBFT = $(LIBFTDIR)/libft.a
-
-override LDFLAGS = -L $(LIBFTDIR)
-override LDLIBS = -lft -pthread
+override LDLIBS = -pthread
 override CFLAGS = -Wall -Wextra -Werror
 
 LINT = norminette
@@ -32,21 +28,17 @@ override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJDIR) $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
+$(NAME): $(OBJDIR) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDLIBS)
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDLIBS)
 
 $(OBJDIR):
 	mkdir -p $@
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFTDIR)
-
 clean:
 	$(RM) $(OBJDIR)
-	$(MAKE) fclean -C $(LIBFTDIR)
 
 fclean: clean
 	$(RM) $(NAME)
