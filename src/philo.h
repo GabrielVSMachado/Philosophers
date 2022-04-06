@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/06 19:44:04 by gvitor-s         ###   ########.fr       */
+/*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
+/*   Updated: 2022/04/06 19:54:09 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "philo.h"
-#include <unistd.h>
+#ifndef PHILO_H
+# define PHILO_H
 
-int	main(int argc, char **argv)
+# include <pthread.h>
+
+struct s_table
 {
-	if (argc < 4)
-	{
-		write(STDERR_FILENO, "Too few arguments!\n", 20);
-		return (1);
-	}
-	if (check_inputs(argv))
-	{
-		write(STDERR_FILENO, "Invalid argument passed!\n", 20);
-		return (1);
-	}
-	return (0);
-}
+	pthread_t		*philo;
+	pthread_mutex_t	*mtx;
+	int				*fork;
+};
+
+int	check_inputs(char **argv);
+#endif
