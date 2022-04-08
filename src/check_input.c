@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:04:28 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/06 19:57:18 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:21:10 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	is_valid_arg(char *arg)
 {
 	if (*arg == '\0')
 		return (0);
+	arg += (*arg == '+');
 	while (arg && *arg && isdigit(*arg))
 		arg++;
 	return (*arg == '\0');

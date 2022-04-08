@@ -27,6 +27,8 @@ endef
 override define SRC
 	main.c
 	check_input.c
+	utils_libft.c
+	init_table.c
 endef
 
 override define SRCTEST

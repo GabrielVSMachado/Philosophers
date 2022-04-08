@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/06 19:54:09 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/07 22:42:44 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,32 @@
 # define PHILO_H
 
 # include <pthread.h>
+# include <unistd.h>
+
+typedef unsigned long	t_death;
+typedef unsigned long	t_time;
+typedef unsigned long	t_eat;
+
+typedef struct s_philo
+{
+	pthread_t	philo;
+	t_time		start_think;
+	t_death		dead:1;
+	t_eat		n_eat;
+}	t_philo;
 
 struct s_table
 {
-	pthread_t		*philo;
-	pthread_mutex_t	*mtx;
-	int				*fork;
+	t_philo			*philosophers;
+	int				n_philophers;
+	pthread_mutex_t	*forks;
+	t_time			eat;
+	useconds_t		sleep;
+	t_time			die;
 };
 
-int	check_inputs(char **argv);
+int				check_inputs(char **argv);
+int				ft_atoi(const char *str);
+struct s_table	*init_table(int n_philophers, char *argv[]);
+void			destroy_table(struct s_table **table);
 #endif
