@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/07 22:41:28 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/19 20:36:42 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_philo	*init_philosophers(struct s_table *table, int n_philophers,
 	while (++_ < n_philophers)
 	{
 		philo[_].dead = 0;
-		philo[_].start_think = 0;
+		philo[_].thinking = 0;
 		philo[_].n_eat = n_eat;
 	}
 	return (philo);

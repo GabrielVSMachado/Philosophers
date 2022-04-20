@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/07 22:42:44 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/19 20:31:12 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef unsigned long	t_eat;
 typedef struct s_philo
 {
 	pthread_t	philo;
-	t_time		start_think;
+	t_time		thinking;
 	t_death		dead:1;
 	t_eat		n_eat;
 }	t_philo;

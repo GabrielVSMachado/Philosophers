@@ -1,9 +1,9 @@
 *.o
 *.a
 *.json
-philo
 hook/
 libft/
 test.c
 a.out
 .cache/
+philo/philo
