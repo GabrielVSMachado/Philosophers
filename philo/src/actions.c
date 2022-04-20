@@ -6,13 +6,14 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 18:47:58 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 19:59:19 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils_actions.h"
 #include "philo.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void	start_think(t_time *thinking, int seat)
 {
@@ -64,4 +65,14 @@ void	start_sleep(struct s_table *table)
 	printf("%d %d is sleeping\n", get_current_time(),
 		table->philosophers->seat);
 	usleep(table->sleep);
+}
+
+void	*die(int seat)
+{
+	void	*die;
+
+	die = malloc(sizeof(int));
+	printf("%d %d died\n", get_current_time(), seat);
+	*(int *)die = 1;
+	return (die);
 }
