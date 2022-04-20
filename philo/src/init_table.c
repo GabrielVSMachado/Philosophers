@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 16:39:22 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:18:51 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	destroy_table(struct s_table **table)
 {
 	while ((*table)->n_philophers--)
 		pthread_mutex_destroy(&(*table)->forks[(*table)->n_philophers]);
+	free((*table)->odd_time);
 	free((*table)->philosophers);
 	free((*table)->forks);
 	free(*table);
@@ -83,10 +84,11 @@ struct s_table	*init_table(int n_philophers, char *argv[])
 	}
 	table->philosophers = init_philosophers(table, n_philophers, argv);
 	if (!table->philosophers)
-	{
-		free(table);
-		return (NULL);
-	}
+		return (free(table), NULL);
+	table->odd_time = memset(malloc(sizeof(int) * (n_philophers / 2)), 1,
+			sizeof(int) * (n_philophers / 2));
+	if (!table->odd_time)
+		return (destroy_table(&table), NULL);
 	table->n_philophers = n_philophers;
 	table->die = ft_atoi(argv[2]);
 	table->eat = ft_atoi(argv[3]);

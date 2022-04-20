@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 16:39:51 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:08:43 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct s_table
 	t_philo			*philosophers;
 	int				n_philophers;
 	pthread_mutex_t	*forks;
+	int				*odd_time;
 	t_time			eat;
 	useconds_t		sleep;
 	t_time			die;
