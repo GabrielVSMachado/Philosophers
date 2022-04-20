@@ -6,13 +6,14 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/19 20:36:42 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 16:39:22 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
 
 void	destroy_table(struct s_table **table)
 {
@@ -54,13 +55,13 @@ static t_philo	*init_philosophers(struct s_table *table, int n_philophers,
 		free(table->forks);
 		return (NULL);
 	}
-	_ = -1;
 	n_eat = 0;
 	if (argv[5])
 		n_eat = ft_atoi(argv[5]);
+	_ = -1;
 	while (++_ < n_philophers)
 	{
-		philo[_].dead = 0;
+		philo[_].seat = _ + 1;
 		philo[_].thinking = 0;
 		philo[_].n_eat = n_eat;
 	}
