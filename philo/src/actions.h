@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:08:38 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 16:13:12 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 18:45:32 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,4 +16,7 @@
 # include "philo.h"
 
 void	start_think(t_time *thinking, int seat);
+void	start_eat(struct s_table *table);
+void	start_sleep(struct s_table *table);
+int		get_forks(struct s_table *table);
 #endif

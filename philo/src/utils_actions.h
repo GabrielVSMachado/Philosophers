@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:07:22 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 16:32:07 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 18:46:47 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@
 # include <pthread.h>
 
 int		get_current_time(void);
+void	leave_fork(pthread_mutex_t *forks, int position);
 void	get_fork_in_position(pthread_mutex_t *forks, int position, int seat);
 #endif
