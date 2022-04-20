@@ -30,6 +30,7 @@ override define SRC
 	init_table.c
 	utils_actions.c
 	actions.c
+	routine.c
 endef
 
 override define SRCTEST
