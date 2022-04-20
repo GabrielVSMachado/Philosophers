@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 17:08:43 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 20:00:35 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,5 @@ int				check_inputs(char **argv);
 int				ft_atoi(const char *str);
 struct s_table	*init_table(int n_philophers, char *argv[]);
 void			destroy_table(struct s_table **table);
+void			*start_dinner(void *block);
 #endif
