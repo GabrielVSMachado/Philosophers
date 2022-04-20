@@ -14,7 +14,6 @@ override TESTDIR = TESTS
 
 override LDLIBS = -pthread
 override CFLAGS = -Wall -Wextra -Werror -g
-override INCLUDES = -I $(SRCDIR)
 
 LINT = norminette
 
@@ -29,6 +28,8 @@ override define SRC
 	check_input.c
 	utils_libft.c
 	init_table.c
+	utils_actions.c
+	actions.c
 endef
 
 override define SRCTEST
@@ -45,7 +46,7 @@ $(NAME): $(OBJDIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDLIBS)
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ $(LDLIBS)
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDLIBS)
 
 $(OBJDIR):
 	mkdir -p $@
