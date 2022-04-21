@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 20:04:43 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/20 21:00:22 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ static void	init_threads(struct s_table **table)
 	cerimony_master = (*table)->philosophers;
 	while (_ < (*table)->n_philophers)
 	{
-		if (pthread_create(&(*table)->philosophers->philo, NULL,
-				start_dinner, table))
+		if (pthread_create(&((*table)->philosophers->philo), NULL,
+				start_dinner, *table))
 		{
 			(*table)->philosophers = cerimony_master;
 			destroy_table(table);
 			write(STDERR_FILENO, "Error on create threads\n", 25);
 			exit(EXIT_FAILURE);
 		}
-		(*table)->philosophers = &(*table)->philosophers[++_];
+		++_;
+		(*table)->philosophers = &((*table)->philosophers[_]);
 	}
 	(*table)->philosophers = cerimony_master;
 }
