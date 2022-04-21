@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 20:00:35 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:37:21 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@
 # include <unistd.h>
 
 typedef unsigned long	t_death;
-typedef unsigned long	t_time;
+typedef unsigned long	t_mls;
 typedef unsigned long	t_eat;
-
-typedef struct s_philo
-{
-	int			seat;
-	pthread_t	philo;
-	t_time		thinking;
-	t_eat		n_eat;
-}	t_philo;
 
 struct s_table
 {
-	t_philo			*philosophers;
 	int				n_philophers;
 	pthread_mutex_t	*forks;
 	int				*odd_time;
-	t_time			eat;
-	useconds_t		sleep;
-	t_time			die;
+	t_mls			eat;
+	t_mls			sleep;
+	t_mls			die;
 };
+
+typedef struct s_philo
+{
+	int				seat;
+	pthread_t		philo;
+	t_mls			thinking;
+	t_eat			n_eat;
+	struct s_table	*table;
+}	t_philo;
 
 int				check_inputs(char **argv);
 int				ft_atoi(const char *str);
-struct s_table	*init_table(int n_philophers, char *argv[]);
-void			destroy_table(struct s_table **table);
+t_philo			*init_table(int n_philophers, char *argv[]);
+void			end_dinner(t_philo **philophers);
 void			*start_dinner(void *block);
 #endif

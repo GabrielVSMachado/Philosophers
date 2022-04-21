@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 21:00:22 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/21 16:12:23 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,58 +15,49 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-static void	wait_threads(struct s_table **table)
+static int	wait_threads(t_philo *philosophers)
 {
 	int	_;
 	int	*dead;
 
 	_ = -1;
 	dead = NULL;
-	while (++_ < (*table)->n_philophers)
+	while (++_ < philosophers->table->n_philophers)
 	{
-		if (pthread_join((*table)->philosophers[_].philo, (void **)&dead))
+		if (pthread_join(philosophers[_].philo, (void **)&dead))
 		{
-			write(STDERR_FILENO, "Error in wait threads\n", 23);
-			destroy_table(table);
-			exit(EXIT_FAILURE);
+			write(STDERR_FILENO, "Error on joined threads\n", 25);
+			return (1);
 		}
 		if (dead && *dead)
 		{
 			free(dead);
-			destroy_table(table);
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 	}
-	destroy_table(table);
-	exit(EXIT_SUCCESS);
+	return (0);
 }
 
-static void	init_threads(struct s_table **table)
+static int	init_threads(t_philo *philosophers)
 {
-	int		_;
-	t_philo	*cerimony_master;
+	int	_;
 
-	_ = 0;
-	cerimony_master = (*table)->philosophers;
-	while (_ < (*table)->n_philophers)
+	_ = -1;
+	while (++_ < philosophers->table->n_philophers)
 	{
-		if (pthread_create(&((*table)->philosophers->philo), NULL,
-				start_dinner, *table))
+		if (pthread_create(&(philosophers[_].philo), NULL, start_dinner,
+				&philosophers[_]))
 		{
-			(*table)->philosophers = cerimony_master;
-			destroy_table(table);
-			write(STDERR_FILENO, "Error on create threads\n", 25);
-			exit(EXIT_FAILURE);
+			write(STDERR_FILENO, "Error on initialize threads\n", 29);
+			return (1);
 		}
-		++_;
-		(*table)->philosophers = &((*table)->philosophers[_]);
 	}
-	(*table)->philosophers = cerimony_master;
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	struct s_table	*table;
+	t_philo	*philosophers;
 
 	if (argc < 4)
 	{
@@ -78,12 +69,16 @@ int	main(int argc, char **argv)
 		write(STDERR_FILENO, "Invalid argument passed!\n", 20);
 		return (1);
 	}
-	table = init_table(ft_atoi(argv[1]), argv);
-	if (!table)
+	philosophers = init_table(ft_atoi(argv[1]), argv);
+	if (!philosophers)
 	{
 		write(STDERR_FILENO, "Failed to alloc memory\n", 24);
 		return (1);
 	}
-	init_threads(&table);
-	wait_threads(&table);
+	if (init_threads(philosophers) || wait_threads(philosophers))
+	{
+		end_dinner(&philosophers);
+		return (1);
+	}
+	return (0);
 }

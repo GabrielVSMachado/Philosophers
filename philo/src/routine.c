@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/20 20:00:00 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:41:29 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,28 @@
 
 void	*start_dinner(void *block)
 {
-	struct s_table	*table;
+	t_philo	*philosophers;
 
-	table = (struct s_table *)block;
+	philosophers = (t_philo *)block;
 	while (1)
 	{
-		start_think(&table->philosophers->thinking, table->philosophers->seat);
-		if (table->philosophers->seat % 2)
+		start_think(&philosophers->thinking, philosophers->seat);
+		if (philosophers->table->n_philophers > 1)
 		{
-			if (wait_until_even_end(table))
-				return (die(table->philosophers->seat));
+			if (philosophers->seat % 2)
+			{
+				if (wait_until_even_end(philosophers))
+					return (die(philosophers->seat, philosophers->thinking));
+			}
+			else
+			{
+				if (wait_until_odd_end(philosophers))
+					return (die(philosophers->seat, philosophers->thinking));
+			}
 		}
-		else
-		{
-			if (wait_until_odd_end(table))
-				return (die(table->philosophers->seat));
-		}
-		if (get_forks(table))
-			return (die(table->philosophers->seat));
-		start_eat(table);
-		start_sleep(table);
+		if (get_forks(philosophers))
+			return (die(philosophers->seat, philosophers->thinking));
+		start_eat(philosophers);
+		start_sleep(philosophers);
 	}
 }
