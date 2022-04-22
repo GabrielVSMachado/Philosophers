@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/21 16:12:23 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/22 17:35:56 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 #include "philo.h"
 #include <unistd.h>
 #include <stdlib.h>
+
+static void	end_dinner(t_philo **philosophers)
+{
+	int	_;
+
+	_ = -1;
+	while (++_ < (*philosophers)->table->n_philophers)
+		pthread_mutex_destroy(&(*philosophers)->table->forks[_]);
+	free((*philosophers)->table->forks);
+	(*philosophers)->table->forks = NULL;
+	free((*philosophers)->table->semaphoro);
+	(*philosophers)->table->semaphoro = NULL;
+	free((*philosophers)->table);
+	(*philosophers)->table = NULL;
+	free((*philosophers));
+	*philosophers = NULL;
+}
 
 static int	wait_threads(t_philo *philosophers)
 {
@@ -45,7 +62,7 @@ static int	init_threads(t_philo *philosophers)
 	_ = -1;
 	while (++_ < philosophers->table->n_philophers)
 	{
-		if (pthread_create(&(philosophers[_].philo), NULL, start_dinner,
+		if (pthread_create(&(philosophers[_].philo), NULL, dont_starve_together,
 				&philosophers[_]))
 		{
 			write(STDERR_FILENO, "Error on initialize threads\n", 29);

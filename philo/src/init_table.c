@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/21 17:18:26 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/22 17:54:10 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,20 @@
 #include <pthread.h>
 #include <string.h>
 
-void	end_dinner(t_philo **philosophers)
+static t_semaphoro	*init_semaphoros(int n_philophers)
 {
-	int	_;
+	t_semaphoro	*semaphoro;
+	int			_;
+	int			tmp;
 
+	semaphoro = malloc(sizeof(t_semaphoro) * n_philophers);
+	if (!semaphoro)
+		return (NULL);
 	_ = -1;
-	while (++_ < (*philosophers)->table->n_philophers)
-		pthread_mutex_destroy(&(*philosophers)->table->forks[_]);
-	free((*philosophers)->table->forks);
-	(*philosophers)->table->forks = NULL;
-	free((*philosophers)->table->odd_time);
-	(*philosophers)->table->odd_time = NULL;
-	free((*philosophers)->table);
-	(*philosophers)->table = NULL;
-	free((*philosophers));
-	*philosophers = NULL;
+	tmp = (int)(n_philophers / 2);
+	while (++_ < n_philophers)
+		semaphoro[_].smp = (!(_ % 2) && tmp-- > 0);
+	return (semaphoro);
 }
 
 static pthread_mutex_t	*init_mutex(int n_philophers)
@@ -78,9 +77,8 @@ static struct s_table	*prepare_table(int n_philophers, char *argv[])
 	table = malloc(sizeof(struct s_table));
 	if (!table)
 		return (NULL);
-	table->odd_time = memset(malloc(sizeof(int) * n_philophers / 2), 1,
-			sizeof(int) * (n_philophers / 2));
-	if (!table->odd_time)
+	table->semaphoro = init_semaphoros(n_philophers);
+	if (!table->semaphoro)
 	{
 		free(table);
 		return (NULL);
@@ -88,10 +86,11 @@ static struct s_table	*prepare_table(int n_philophers, char *argv[])
 	table->forks = init_mutex(n_philophers);
 	if (!table->forks)
 	{
-		free(table->odd_time);
+		free(table->semaphoro);
 		free(table);
 		return (NULL);
 	}
+	table->starved_together = 0;
 	table->n_philophers = n_philophers;
 	table->die = ft_atoi(argv[2]);
 	table->eat = ft_atoi(argv[3]);

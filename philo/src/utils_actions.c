@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/21 18:40:48 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/22 16:53:48 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,45 +38,13 @@ void	leave_fork(pthread_mutex_t *forks, int position)
 	pthread_mutex_unlock(&forks[position]);
 }
 
-int	wait_until_odd_end(t_philo *philosophers)
+int	wait_until_its_time(t_philo *philosophers)
 {
-	static pthread_mutex_t	_ = PTHREAD_MUTEX_INITIALIZER;
-	int						n_phls;
-	int						seat;
-	int						*odd_time;
-	int						access;
+	t_semaphoro				*time;
 
-	seat = philosophers->seat;
-	n_phls = philosophers->table->n_philophers;
-	odd_time = philosophers->table->odd_time;
-	access = (int)(n_phls / 2);
-	access += (!access);
-	while (pthread_mutex_lock(&_), odd_time[(seat - 1) % access])
+	time = philosophers->table->semaphoro;
+	while (!time[philosophers->seat - 1].smp)
 	{
-		pthread_mutex_unlock(&_);
-		if (get_current_time() - philosophers->thinking
-			>= philosophers->table->die)
-			return (1);
-	}
-	return (0);
-}
-
-int	wait_until_even_end(t_philo *philosophers)
-{
-	static pthread_mutex_t	_ = PTHREAD_MUTEX_INITIALIZER;
-	int						n_phls;
-	int						seat;
-	int						*odd_time;
-	int						access;
-
-	seat = philosophers->seat;
-	n_phls = philosophers->table->n_philophers;
-	odd_time = philosophers->table->odd_time;
-	access = (int)(n_phls / 2);
-	access += (!access);
-	while (pthread_mutex_lock(&_), !odd_time[(seat - 1) % access])
-	{
-		pthread_mutex_unlock(&_);
 		if (get_current_time() - philosophers->thinking
 			>= philosophers->table->die)
 			return (1);

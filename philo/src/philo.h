@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/21 18:37:21 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/22 17:56:17 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,20 @@ typedef unsigned long	t_death;
 typedef unsigned long	t_mls;
 typedef unsigned long	t_eat;
 
+typedef struct s_semaphoro
+{
+	unsigned int	smp:1;
+}	t_semaphoro;
+
 struct s_table
 {
 	int				n_philophers;
 	pthread_mutex_t	*forks;
-	int				*odd_time;
+	t_semaphoro		*semaphoro;
 	t_mls			eat;
 	t_mls			sleep;
 	t_mls			die;
+	t_death			starved_together;
 };
 
 typedef struct s_philo
@@ -42,6 +48,5 @@ typedef struct s_philo
 int				check_inputs(char **argv);
 int				ft_atoi(const char *str);
 t_philo			*init_table(int n_philophers, char *argv[]);
-void			end_dinner(t_philo **philophers);
-void			*start_dinner(void *block);
+void			*dont_starve_together(void *block);
 #endif

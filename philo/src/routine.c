@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/21 18:41:29 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/22 17:56:36 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "utils_actions.h"
 #include "philo.h"
 
-void	*start_dinner(void *block)
+void	*dont_starve_together(void *block)
 {
 	t_philo	*philosophers;
 
@@ -22,22 +22,18 @@ void	*start_dinner(void *block)
 	while (1)
 	{
 		start_think(&philosophers->thinking, philosophers->seat);
-		if (philosophers->table->n_philophers > 1)
-		{
-			if (philosophers->seat % 2)
-			{
-				if (wait_until_even_end(philosophers))
-					return (die(philosophers->seat, philosophers->thinking));
-			}
-			else
-			{
-				if (wait_until_odd_end(philosophers))
-					return (die(philosophers->seat, philosophers->thinking));
-			}
-		}
-		if (get_forks(philosophers))
-			return (die(philosophers->seat, philosophers->thinking));
+		if (wait_until_its_time(philosophers)
+			|| philosophers->table->starved_together)
+			return (die(philosophers->seat, philosophers->thinking,
+					&philosophers->table->starved_together));
+		if (get_forks(philosophers) || philosophers->table->starved_together)
+			return (die(philosophers->seat, philosophers->thinking,
+					&philosophers->table->starved_together));
 		start_eat(philosophers);
+		if (philosophers->table->starved_together)
+			return (NULL);
 		start_sleep(philosophers);
+		if (philosophers->table->starved_together)
+			return (NULL);
 	}
 }
