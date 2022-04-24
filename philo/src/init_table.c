@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 21:44:55 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/24 17:47:03 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_semaphoro	*init_semaphoros(int n_philophers)
 	if (!semaphoro)
 		return (NULL);
 	_ = -1;
-	tmp = (int)(n_philophers / 2);
+	tmp = (int)(n_philophers / 2) + n_philophers * (n_philophers == 1);
 	while (++_ < n_philophers)
 		semaphoro[_].smp = (!(_ % 2) && tmp-- > 0);
 	return (semaphoro);
@@ -63,7 +63,8 @@ static t_philo	*init_philosophers(char *argv[], int n_philophers,
 	{
 		philosophers[_].philo = 0;
 		philosophers[_].seat = _ + 1;
-		philosophers[_].thinking = 0;
+		philosophers[_].start_sim = 0;
+		philosophers[_].last_meal = 0;
 		philosophers[_].table = table;
 		philosophers[_].n_eat = n_eat;
 	}

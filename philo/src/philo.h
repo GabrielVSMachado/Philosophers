@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 19:54:21 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/24 17:09:31 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ typedef struct s_philo
 {
 	int				seat;
 	pthread_t		philo;
-	t_mls			thinking;
+	t_mls			start_sim;
+	t_mls			last_meal;
 	t_eat			n_eat;
 	struct s_table	*table;
 }	t_philo;

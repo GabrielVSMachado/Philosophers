@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 22:17:29 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/24 17:55:02 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	get_fork_in_position(t_philo *philosophers, int position)
 {
 	pthread_mutex_lock(&philosophers->table->printlock);
 	printf("%ld %d has taken a fork\n",
-		get_current_time() - philosophers->thinking,
+		get_current_time() - philosophers->start_sim,
 		philosophers->seat);
 	pthread_mutex_unlock(&philosophers->table->printlock);
 	pthread_mutex_lock(&philosophers->table->forks[position]);
@@ -43,7 +43,7 @@ void	leave_fork(pthread_mutex_t *forks, int position)
 	pthread_mutex_unlock(&forks[position]);
 }
 
-int	wait_until_its_time(t_philo *philosophers)
+void	wait_until_its_time(t_philo *philosophers)
 {
 	t_semaphoro	*time;
 	int			its_your_time;
@@ -54,13 +54,16 @@ int	wait_until_its_time(t_philo *philosophers)
 	pthread_mutex_unlock(&philosophers->table->printlock);
 	while (its_your_time)
 	{
-		if (must_die(philosophers->thinking, philosophers->table->die))
+		if (must_die(philosophers->last_meal, philosophers->table->die)
+			|| someone_is_starved(philosophers))
 			die(philosophers);
 		pthread_mutex_lock(&philosophers->table->printlock);
 		its_your_time = !time[philosophers->seat - 1].smp;
 		pthread_mutex_unlock(&philosophers->table->printlock);
 	}
-	return (0);
+	if (must_die(philosophers->last_meal, philosophers->table->die)
+		|| someone_is_starved(philosophers))
+		die(philosophers);
 }
 
 void	change_semaphoros(struct s_table *table, int seat)
