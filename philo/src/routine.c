@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/22 17:56:36 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 21:43:15 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,14 @@ void	*dont_starve_together(void *block)
 	philosophers = (t_philo *)block;
 	while (1)
 	{
-		start_think(&philosophers->thinking, philosophers->seat);
+		start_think(&philosophers->thinking, philosophers->seat,
+			philosophers->table);
 		if (wait_until_its_time(philosophers)
 			|| philosophers->table->starved_together)
-			return (die(philosophers->seat, philosophers->thinking,
-					&philosophers->table->starved_together));
+			die(philosophers);
 		if (get_forks(philosophers) || philosophers->table->starved_together)
-			return (die(philosophers->seat, philosophers->thinking,
-					&philosophers->table->starved_together));
+			die(philosophers);
 		start_eat(philosophers);
-		if (philosophers->table->starved_together)
-			return (NULL);
 		start_sleep(philosophers);
-		if (philosophers->table->starved_together)
-			return (NULL);
 	}
 }

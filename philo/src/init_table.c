@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/22 17:54:10 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 19:01:38 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ static struct s_table	*prepare_table(int n_philophers, char *argv[])
 		free(table);
 		return (NULL);
 	}
+	pthread_mutex_init(&table->printlock, NULL);
 	table->starved_together = 0;
 	table->n_philophers = n_philophers;
 	table->die = ft_atoi(argv[2]);

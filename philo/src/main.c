@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/22 17:35:56 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 21:15:32 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	end_dinner(t_philo **philosophers)
 	_ = -1;
 	while (++_ < (*philosophers)->table->n_philophers)
 		pthread_mutex_destroy(&(*philosophers)->table->forks[_]);
+	pthread_mutex_destroy(&(*philosophers)->table->printlock);
 	free((*philosophers)->table->forks);
 	(*philosophers)->table->forks = NULL;
 	free((*philosophers)->table->semaphoro);
@@ -35,20 +36,13 @@ static void	end_dinner(t_philo **philosophers)
 static int	wait_threads(t_philo *philosophers)
 {
 	int	_;
-	int	*dead;
 
 	_ = -1;
-	dead = NULL;
 	while (++_ < philosophers->table->n_philophers)
 	{
-		if (pthread_join(philosophers[_].philo, (void **)&dead))
+		if (pthread_join(philosophers[_].philo, NULL))
 		{
 			write(STDERR_FILENO, "Error on joined threads\n", 25);
-			return (1);
-		}
-		if (dead && *dead)
-		{
-			free(dead);
 			return (1);
 		}
 	}
@@ -92,10 +86,8 @@ int	main(int argc, char **argv)
 		write(STDERR_FILENO, "Failed to alloc memory\n", 24);
 		return (1);
 	}
-	if (init_threads(philosophers) || wait_threads(philosophers))
-	{
-		end_dinner(&philosophers);
-		return (1);
-	}
+	init_threads(philosophers);
+	wait_threads(philosophers);
+	end_dinner(&philosophers);
 	return (0);
 }

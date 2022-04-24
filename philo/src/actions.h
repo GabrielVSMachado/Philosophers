@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:08:38 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/22 17:52:20 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 21:26:54 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include "philo.h"
 
-void	start_think(t_mls *thinking, int seat);
+void	start_think(t_mls *thinking, int seat, struct s_table *table);
 void	start_eat(t_philo *philosophers);
 void	start_sleep(t_philo *philosophers);
 int		get_forks(t_philo *philosophers);
-void	*die(int seat, t_mls thinking, t_death *starved_together);
+void	die(t_philo *philosophers);
 #endif

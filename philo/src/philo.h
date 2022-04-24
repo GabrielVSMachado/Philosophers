@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/22 17:56:17 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 19:54:21 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ struct s_table
 {
 	int				n_philophers;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	printlock;
 	t_semaphoro		*semaphoro;
 	t_mls			eat;
 	t_mls			sleep;
