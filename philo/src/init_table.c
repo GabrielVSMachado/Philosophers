@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 19:01:38 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 21:44:55 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_philo	*init_philosophers(char *argv[], int n_philophers,
 	philosophers = malloc(sizeof(struct s_philo) * n_philophers);
 	if (!philosophers)
 		return (NULL);
-	n_eat = 0;
+	n_eat = -1;
 	if (argv[5])
 		n_eat = ft_atoi(argv[5]);
 	_ = -1;
