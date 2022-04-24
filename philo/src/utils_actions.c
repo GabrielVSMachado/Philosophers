@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 21:23:42 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/23 22:17:29 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <pthread.h>
 #include <stdio.h>
 #include "philo.h"
+#include "actions.h"
+#include "utils_actions.h"
 
 int	get_current_time(void)
 {
@@ -26,13 +28,14 @@ int	get_current_time(void)
 	return (mls_time);
 }
 
-void	get_fork_in_position(struct s_table *table, int position, int seat,
-		t_mls thinking)
+void	get_fork_in_position(t_philo *philosophers, int position)
 {
-	pthread_mutex_lock(&table->printlock);
-	printf("%ld %d has taken a fork\n", get_current_time() - thinking, seat);
-	pthread_mutex_unlock(&table->printlock);
-	pthread_mutex_lock(&table->forks[position]);
+	pthread_mutex_lock(&philosophers->table->printlock);
+	printf("%ld %d has taken a fork\n",
+		get_current_time() - philosophers->thinking,
+		philosophers->seat);
+	pthread_mutex_unlock(&philosophers->table->printlock);
+	pthread_mutex_lock(&philosophers->table->forks[position]);
 }
 
 void	leave_fork(pthread_mutex_t *forks, int position)
@@ -51,12 +54,19 @@ int	wait_until_its_time(t_philo *philosophers)
 	pthread_mutex_unlock(&philosophers->table->printlock);
 	while (its_your_time)
 	{
-		if (get_current_time() - philosophers->thinking
-			>= philosophers->table->die)
-			return (1);
+		if (must_die(philosophers->thinking, philosophers->table->die))
+			die(philosophers);
 		pthread_mutex_lock(&philosophers->table->printlock);
 		its_your_time = !time[philosophers->seat - 1].smp;
 		pthread_mutex_unlock(&philosophers->table->printlock);
 	}
 	return (0);
+}
+
+void	change_semaphoros(struct s_table *table, int seat)
+{
+	pthread_mutex_lock(&table->printlock);
+	table->semaphoro[seat - 1].smp = 0;
+	table->semaphoro[seat % table->n_philophers].smp = 1;
+	pthread_mutex_unlock(&table->printlock);
 }
