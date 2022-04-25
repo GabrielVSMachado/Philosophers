@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:07:22 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/24 17:55:15 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/25 13:46:04 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	wait_until_its_time(t_philo *philosophers);
 void	change_semaphoros(struct s_table *table, int seat);
 int		cant_eat_anymore(t_philo *philosophers);
 int		someone_is_starved(t_philo *philosophers);
-int		must_die(t_mls thinking, t_mls die);
+int		must_die(t_philo *philosopher);
 #endif

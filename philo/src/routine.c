@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/24 17:58:26 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/25 14:05:31 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 #include "utils_actions.h"
 #include "philo.h"
 
-int	must_die(t_mls last_meal, t_mls die)
+int	must_die(t_philo *philosopher)
 {
-	return (get_current_time() - last_meal >= die);
+	return (get_current_time() - philosopher->last_meal
+		>= philosopher->table->die);
 }
 
 int	cant_eat_anymore(t_philo *philosophers)
 {
-	int	finished;
-
-	pthread_mutex_lock(&philosophers->table->printlock);
-	finished = !philosophers->n_eat;
-	pthread_mutex_unlock(&philosophers->table->printlock);
-	return (finished);
+	return (!philosophers->n_eat);
 }
 
 int	someone_is_starved(t_philo *philosophers)
@@ -45,8 +41,11 @@ void	*dont_starve_together(void *block)
 
 	philosophers = (t_philo *)block;
 	philosophers->start_sim = get_current_time();
+	philosophers->last_meal = philosophers->start_sim;
 	while (1)
 	{
+		if (someone_is_starved(philosophers))
+			pthread_exit(NULL);
 		start_think(philosophers);
 		wait_until_its_time(philosophers);
 		get_forks(philosophers);

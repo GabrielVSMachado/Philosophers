@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/24 17:55:02 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/25 13:51:46 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,17 @@ void	wait_until_its_time(t_philo *philosophers)
 	pthread_mutex_unlock(&philosophers->table->printlock);
 	while (its_your_time)
 	{
-		if (must_die(philosophers->last_meal, philosophers->table->die)
-			|| someone_is_starved(philosophers))
+		if (someone_is_starved(philosophers))
+			pthread_exit(NULL);
+		if (must_die(philosophers))
 			die(philosophers);
 		pthread_mutex_lock(&philosophers->table->printlock);
 		its_your_time = !time[philosophers->seat - 1].smp;
 		pthread_mutex_unlock(&philosophers->table->printlock);
 	}
-	if (must_die(philosophers->last_meal, philosophers->table->die)
-		|| someone_is_starved(philosophers))
+	if (someone_is_starved(philosophers))
+		pthread_exit(NULL);
+	if (must_die(philosophers))
 		die(philosophers);
 }
 
