@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils_actions.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/25 21:21:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/26 15:30:48 by gvitor-s         ###   ########.fr       */
+/*   Created: 2022/04/26 12:42:55 by gvitor-s          #+#    #+#             */
+/*   Updated: 2022/04/26 15:30:18 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "philo_bonus.h"
+#ifndef UTILS_ACTIONS_H
+# define UTILS_ACTIONS_H
 
-int	main(int argc, char *const *argv)
-{
-	if (argc < 4 || argc > 6)
-	{
-		if (argc < 4)
-			write(STDERR_FILENO, "Too few arguments\n", 19);
-		else
-			write(STDERR_FILENO, "Too many arguments\n", 20);
-		return (1);
-	}
-	if (check_inputs(argv))
-	{
-		write(STDERR_FILENO, "Wrong argument passed!\n", 24);
-		return (1);
-	}
-	return (0);
-}
+# include "philo_bonus.h"
+
+int				ft_atoi(const char *str);
+void			destroy_table(struct s_table **table);
+t_philo			*init_philosopher(int n_seat, char *argv_n_eat);
+struct s_table	*init_table(unsigned long n_philosophers, char *const *argv);
+#endif

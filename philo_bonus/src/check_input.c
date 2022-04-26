@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/25 21:21:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/26 15:30:48 by gvitor-s         ###   ########.fr       */
+/*   Created: 2022/04/06 16:04:28 by gvitor-s          #+#    #+#             */
+/*   Updated: 2022/04/26 15:31:15 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "philo_bonus.h"
+#include <stdlib.h>
 
-int	main(int argc, char *const *argv)
+static int	isdigit(int c)
 {
-	if (argc < 4 || argc > 6)
-	{
-		if (argc < 4)
-			write(STDERR_FILENO, "Too few arguments\n", 19);
-		else
-			write(STDERR_FILENO, "Too many arguments\n", 20);
-		return (1);
-	}
-	if (check_inputs(argv))
-	{
-		write(STDERR_FILENO, "Wrong argument passed!\n", 24);
-		return (1);
-	}
-	return (0);
+	return (c <= '9' && c >= '0');
+}
+
+static int	is_valid_arg(char *arg)
+{
+	if (*arg == '\0')
+		return (0);
+	arg += (*arg == '+');
+	while (arg && *arg && isdigit(*arg))
+		arg++;
+	return (*arg == '\0');
+}
+
+int	check_inputs(char *const *argv)
+{
+	int	counter;
+
+	counter = 0;
+	while (argv[++counter] && is_valid_arg(argv[counter]))
+		;
+	return (argv[counter] != NULL);
 }

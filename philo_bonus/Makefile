@@ -6,11 +6,15 @@ override CC = gcc
 
 OBJDIR = obj
 override SRCDIR = src
+override LDLIBS = -pthread
 
 vpath %.c $(SRCDIR)
 
 override define SRC
 	main.c
+	check_input.c
+	init_table.c
+	utils_libft.c
 endef
 
 override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
@@ -21,7 +25,7 @@ $(NAME): $(OBJDIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $@
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDLIBS)
 
 $(OBJDIR):
 	mkdir -p $@
