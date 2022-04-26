@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/23 21:15:32 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/25 21:31:09 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ int	main(int argc, char **argv)
 {
 	t_philo	*philosophers;
 
-	if (argc < 4)
+	if (argc < 4 || argc > 6)
 	{
-		write(STDERR_FILENO, "Too few arguments!\n", 20);
+		if (argc < 4)
+			write(STDERR_FILENO, "Too few arguments!\n", 20);
+		else
+			write(STDERR_FILENO, "Too many arguments!\n", 21);
 		return (1);
 	}
 	if (check_inputs(argv))
@@ -83,7 +86,7 @@ int	main(int argc, char **argv)
 	philosophers = init_table(ft_atoi(argv[1]), argv);
 	if (!philosophers)
 	{
-		write(STDERR_FILENO, "Failed to alloc memory\n", 24);
+		write(STDERR_FILENO, "Failed to alloc memory!\n", 25);
 		return (1);
 	}
 	init_threads(philosophers);
