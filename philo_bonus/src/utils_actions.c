@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 11:11:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/27 13:07:49 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/27 18:00:44 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	print_msg(struct s_table *table, char *msg)
 {
 	sem_wait(table->print);
 	printf(msg, get_current_time() - table->philosopher->start_sim,
-		get_current_time() - table->philosopher->seat);
+		table->philosopher->seat);
 	sem_post(table->print);
 }

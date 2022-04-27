@@ -17,6 +17,7 @@ override define SRC
 	utils_libft.c
 	utils_actions.c
 	actions.c
+	process.c
 endef
 
 override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)

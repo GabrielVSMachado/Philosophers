@@ -7,5 +7,5 @@ test.c
 a.out
 .cache/
 philo/philo
-philo/test.sh
+test.sh
 philo/philo_bonus
