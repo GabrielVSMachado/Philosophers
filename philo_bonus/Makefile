@@ -13,8 +13,10 @@ vpath %.c $(SRCDIR)
 override define SRC
 	main.c
 	check_input.c
-	init_table.c
+	init_content.c
 	utils_libft.c
+	utils_actions.c
+	actions.c
 endef
 
 override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
