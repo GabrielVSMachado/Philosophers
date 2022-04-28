@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:01:14 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/24 17:09:31 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 23:15:31 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ struct s_table
 	t_mls			eat;
 	t_mls			sleep;
 	t_mls			die;
-	t_death			starved_together;
+	_Atomic t_death	starved_together;
 };
 
 typedef struct s_philo

@@ -1,26 +1,16 @@
 override NAME = philo
-override ARCH = $(findstring Arch,$(file < /etc/os-release))
 RM = rm -rf
 
-ifeq (Arch,$(ARCH))
-	CC := gcc
-else
-	CC := clang
-endif
+CC := gcc
 
 override SRCDIR = src
 override OBJDIR = obj
-override TESTDIR = TESTS
 
 override LDLIBS = -pthread
-override CFLAGS = -Wall -Wextra -Werror -g
-
-LINT = norminette
-
+override CFLAGS = -Wall -Wextra -Werror
 
 override define VPATH
 	$(SRCDIR)
-	$(TESTDIR)
 endef
 
 override define SRC
@@ -33,13 +23,7 @@ override define SRC
 	routine.c
 endef
 
-override define SRCTEST
-	$(filter-out main.c,$(SRC))
-	tests_check_inputs.c
-endef
-
 override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
-override OBJTESTS = $(SRCTEST:%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
 
@@ -57,13 +41,7 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) test
 
 re: fclean all
-
-test: $(OBJDIR) $(OBJTESTS)
-	$(CC) $(INCLUDES) $(OBJTESTS) -o test -lcriterion
-	@./test
-	@$(MAKE) fclean > /dev/null
 
 .PHONY: all clean fclean re

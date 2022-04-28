@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/25 14:15:58 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 23:15:59 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,19 @@ void	get_forks(t_philo *philosophers)
 	left = philosophers->seat - 2;
 	left += (left < 0) * philosophers->table->n_philophers;
 	right = philosophers->seat - 1;
-	get_fork_in_position(philosophers, left);
 	if (left == right)
 	{
+		get_fork_in_position(philosophers, left);
 		leave_fork(philosophers->table->forks, left);
 		usleep(philosophers->table->die * 1000);
-		philosophers->last_meal = get_current_time() + philosophers->table->die;
+		die(philosophers);
 	}
+	get_fork_in_position(philosophers, left);
+	get_fork_in_position(philosophers, right);
 	if (someone_is_starved(philosophers))
 		pthread_exit(NULL);
 	if (must_die(philosophers))
 		die(philosophers);
-	get_fork_in_position(philosophers, right);
 }
 
 void	start_eat(t_philo *philosophers)

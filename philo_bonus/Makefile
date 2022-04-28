@@ -1,6 +1,6 @@
 NAME = philo_bonus
 RM = rm -rf
-override CFLAGS = -Wall -Wextra -Werror -g
+override CFLAGS = -Wall -Wextra -Werror
 
 override CC = gcc
 

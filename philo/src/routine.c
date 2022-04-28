@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/25 14:05:31 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 23:16:40 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ int	cant_eat_anymore(t_philo *philosophers)
 
 int	someone_is_starved(t_philo *philosophers)
 {
-	int	starved;
-
-	pthread_mutex_lock(&philosophers->table->printlock);
-	starved = philosophers->table->starved_together;
-	pthread_mutex_unlock(&philosophers->table->printlock);
-	return (starved);
+	return (philosophers->table->starved_together);
 }
 
 void	*dont_starve_together(void *block)
