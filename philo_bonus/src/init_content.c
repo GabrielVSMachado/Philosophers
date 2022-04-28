@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 12:40:32 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/27 19:08:23 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 17:09:31 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ t_philo	*init_philosopher(int seat, char *argv_n_eat)
 void	destroy_table(struct s_table **table)
 {
 	free((*table)->pids);
-	sem_destroy((*table)->forks);
-	(*table)->forks = NULL;
-	sem_destroy((*table)->print);
-	(*table)->print = NULL;
-	sem_destroy((*table)->your_time);
-	(*table)->your_time = NULL;
-	sem_destroy((*table)->starved_together);
-	(*table)->starved_together = NULL;
+	sem_close((*table)->forks);
+	sem_close((*table)->print);
+	sem_close((*table)->your_time);
+	sem_close((*table)->starved_together);
 	free((*table)->philosopher);
 	(*table)->philosopher = NULL;
 	free((*table));
 	(*table) = NULL;
+	sem_unlink("/forks");
+	sem_unlink("/print");
+	sem_unlink("/starved_together");
+	sem_unlink("/your_time");
 }
 
 static void	init_sem(struct s_table *table, int n_philosophers)

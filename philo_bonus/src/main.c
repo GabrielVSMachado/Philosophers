@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 21:21:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/27 19:08:37 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 16:35:45 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@ int	main(int argc, char *const *argv)
 {
 	struct s_table	*table;
 
-	if (argc < 4 || argc > 6)
-	{
-		if (argc < 4)
-			write(STDERR_FILENO, "Too few arguments!\n", 19);
-		else
-			write(STDERR_FILENO, "Too many arguments!\n", 20);
-		return (1);
-	}
+	if (argc < 4)
+		return (write(STDERR_FILENO, "Too few arguments!\n", 19), 1);
+	if (argc > 6)
+		return (write(STDERR_FILENO, "Too many arguments!\n", 20), 1);
 	if (check_inputs(argv))
 	{
 		write(STDERR_FILENO, "Wrong argument passed!\n", 24);
@@ -43,9 +39,5 @@ int	main(int argc, char *const *argv)
 		return (1);
 	}
 	destroy_table(&table);
-	sem_unlink("/forks");
-	sem_unlink("/print");
-	sem_unlink("/starved_together");
-	sem_unlink("/your_time");
 	return (0);
 }

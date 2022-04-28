@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 13:55:40 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/27 19:07:39 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/28 16:42:23 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	*wait_until_die(void *block)
 	while (++_ < thread->n_philosophers)
 		if (thread->pids[_] != -1)
 			kill(thread->pids[_], SIGKILL);
-	free(thread);
+	free(block);
 	return (NULL);
 }
 
@@ -94,6 +94,5 @@ int	dont_starved_together(struct s_table *table, char *n_eat)
 	if (init_thread_monitoring(table->pids, table->starved_together,
 			table->n_philosophers))
 		return (1);
-	wait_all_eat(table);
-	return (0);
+	return (wait_all_eat(table), 0);
 }
