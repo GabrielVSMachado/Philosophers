@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/28 23:16:40 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 17:18:15 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,29 @@
 #include "utils_actions.h"
 #include "philo.h"
 
+void	make_action(t_philo *philosopher, t_mls time_action)
+{
+	t_mls	future;
+
+	future = get_current_time() + time_action;
+	while (get_current_time() - time_action <= future)
+	{
+		if (must_die(philosopher))
+			die(philosopher);
+		usleep(10);
+	}
+}
+
 int	must_die(t_philo *philosopher)
 {
+	usleep(100);
 	return (get_current_time() - philosopher->last_meal
-		>= philosopher->table->die);
+		>= philosopher->table->die || philosopher->table->starved_together);
 }
 
 int	cant_eat_anymore(t_philo *philosophers)
 {
 	return (!philosophers->n_eat);
-}
-
-int	someone_is_starved(t_philo *philosophers)
-{
-	return (philosophers->table->starved_together);
 }
 
 void	*dont_starve_together(void *block)
@@ -39,8 +48,6 @@ void	*dont_starve_together(void *block)
 	philosophers->last_meal = philosophers->start_sim;
 	while (1)
 	{
-		if (someone_is_starved(philosophers))
-			pthread_exit(NULL);
 		start_think(philosophers);
 		wait_until_its_time(philosophers);
 		get_forks(philosophers);

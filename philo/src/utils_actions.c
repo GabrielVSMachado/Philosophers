@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/25 13:51:46 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 21:09:46 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "actions.h"
 #include "utils_actions.h"
 
-int	get_current_time(void)
+t_mls	get_current_time(void)
 {
 	struct timeval	tv;
 	t_mls			mls_time;
@@ -49,29 +49,25 @@ void	wait_until_its_time(t_philo *philosophers)
 	int			its_your_time;
 
 	time = philosophers->table->semaphoro;
-	pthread_mutex_lock(&philosophers->table->printlock);
+	pthread_mutex_lock(&philosophers->table->check_your_time);
 	its_your_time = !time[philosophers->seat - 1].smp;
-	pthread_mutex_unlock(&philosophers->table->printlock);
+	pthread_mutex_unlock(&philosophers->table->check_your_time);
 	while (its_your_time)
 	{
-		if (someone_is_starved(philosophers))
-			pthread_exit(NULL);
 		if (must_die(philosophers))
 			die(philosophers);
-		pthread_mutex_lock(&philosophers->table->printlock);
+		pthread_mutex_lock(&philosophers->table->check_your_time);
 		its_your_time = !time[philosophers->seat - 1].smp;
-		pthread_mutex_unlock(&philosophers->table->printlock);
+		pthread_mutex_unlock(&philosophers->table->check_your_time);
 	}
-	if (someone_is_starved(philosophers))
-		pthread_exit(NULL);
 	if (must_die(philosophers))
 		die(philosophers);
 }
 
 void	change_semaphoros(struct s_table *table, int seat)
 {
-	pthread_mutex_lock(&table->printlock);
+	pthread_mutex_lock(&table->check_your_time);
 	table->semaphoro[seat - 1].smp = 0;
 	table->semaphoro[seat % table->n_philophers].smp = 1;
-	pthread_mutex_unlock(&table->printlock);
+	pthread_mutex_unlock(&table->check_your_time);
 }

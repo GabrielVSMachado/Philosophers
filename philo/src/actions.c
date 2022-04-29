@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/28 23:15:59 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 21:09:27 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 void	die(t_philo *philosophers)
 {
-	pthread_mutex_lock(&philosophers->table->printlock);
 	if (!philosophers->table->starved_together)
 	{
 		philosophers->table->starved_together = 1;
+		pthread_mutex_lock(&philosophers->table->printlock);
 		printf("%ld %d died\n", get_current_time() - philosophers->start_sim,
 			philosophers->seat);
+		pthread_mutex_unlock(&philosophers->table->printlock);
 	}
-	pthread_mutex_unlock(&philosophers->table->printlock);
 	pthread_exit(NULL);
 }
 
@@ -54,17 +54,15 @@ void	get_forks(t_philo *philosophers)
 	}
 	get_fork_in_position(philosophers, left);
 	get_fork_in_position(philosophers, right);
-	if (someone_is_starved(philosophers))
-		pthread_exit(NULL);
 	if (must_die(philosophers))
 		die(philosophers);
 }
 
 void	start_eat(t_philo *philosophers)
 {
-	int						left;
-	int						right;
-	int						seat;
+	int	left;
+	int	right;
+	int	seat;
 
 	seat = philosophers->seat;
 	left = seat - 2;
@@ -75,14 +73,14 @@ void	start_eat(t_philo *philosophers)
 	printf("%ld %d is eating\n",
 		get_current_time() - philosophers->start_sim, seat);
 	pthread_mutex_unlock(&philosophers->table->printlock);
-	usleep(philosophers->table->eat * 1000);
-	leave_fork(philosophers->table->forks, left);
-	leave_fork(philosophers->table->forks, right);
-	philosophers->n_eat -= (philosophers->n_eat > 0);
-	change_semaphoros(philosophers->table, philosophers->seat);
+	make_action(philosophers, philosophers->table->eat);
 	if (must_die(philosophers))
 		die(philosophers);
-	if (cant_eat_anymore(philosophers) || someone_is_starved(philosophers))
+	leave_fork(philosophers->table->forks, left);
+	leave_fork(philosophers->table->forks, right);
+	change_semaphoros(philosophers->table, philosophers->seat);
+	philosophers->n_eat -= (philosophers->n_eat > 0);
+	if (cant_eat_anymore(philosophers))
 		pthread_exit(NULL);
 }
 
@@ -92,9 +90,7 @@ void	start_sleep(t_philo *philosophers)
 	printf("%ld %d is sleeping\n", get_current_time() - philosophers->start_sim,
 		philosophers->seat);
 	pthread_mutex_unlock(&philosophers->table->printlock);
-	usleep(philosophers->table->sleep * 1000);
-	if (someone_is_starved(philosophers))
-		pthread_exit(NULL);
+	make_action(philosophers, philosophers->table->sleep);
 	if (must_die(philosophers))
 		die(philosophers);
 }

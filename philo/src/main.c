@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:25:24 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/25 21:31:09 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 17:18:03 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	end_dinner(t_philo **philosophers)
 	while (++_ < (*philosophers)->table->n_philophers)
 		pthread_mutex_destroy(&(*philosophers)->table->forks[_]);
 	pthread_mutex_destroy(&(*philosophers)->table->printlock);
+	pthread_mutex_destroy(&(*philosophers)->table->check_your_time);
 	free((*philosophers)->table->forks);
 	(*philosophers)->table->forks = NULL;
 	free((*philosophers)->table->semaphoro);
