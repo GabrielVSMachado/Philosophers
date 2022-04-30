@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 19:08:40 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 20:38:27 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	print_msg(char *msg, t_philo *philosopher)
 	pthread_mutex_unlock(&philosopher->table->printlock);
 }
 
-void	get_fork_in_position(t_philo *philosophers, int position)
+void	get_fork_in_position(t_philo *philosophers, int fstposition,
+		int secposition)
 {
-	pthread_mutex_lock(&philosophers->table->forks[position]);
+	pthread_mutex_lock(&philosophers->table->forks[fstposition]);
+	pthread_mutex_lock(&philosophers->table->forks[secposition]);
 }
 
 void	leave_fork(pthread_mutex_t *forks, int position)

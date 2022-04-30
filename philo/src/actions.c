@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 19:30:00 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 20:39:17 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,15 @@ void	get_forks(t_philo *philosophers)
 	right = philosophers->seat - 1;
 	if (left == right)
 	{
-		get_fork_in_position(philosophers, left);
-		leave_fork(philosophers->table->forks, left);
+		print_msg("%ld %d has taken a fork\n", philosophers);
 		usleep(philosophers->table->die * 1000);
 		die(philosophers);
 	}
-	get_fork_in_position(philosophers, left);
+	if (philosophers->seat % 2)
+		get_fork_in_position(philosophers, left, right);
+	else
+		get_fork_in_position(philosophers, right, left);
 	print_msg("%ld %d has taken a fork\n", philosophers);
-	get_fork_in_position(philosophers, right);
 	print_msg("%ld %d has taken a fork\n", philosophers);
 	if (must_die(philosophers))
 	{
