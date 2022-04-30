@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/29 21:09:27 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 21:54:38 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	die(t_philo *philosophers)
 {
 	if (!philosophers->table->starved_together)
 	{
+		pthread_mutex_lock(&philosophers->table->printlock);
 		philosophers->table->starved_together = 1;
 		pthread_mutex_lock(&philosophers->table->printlock);
 		printf("%ld %d died\n", get_current_time() - philosophers->start_sim,
