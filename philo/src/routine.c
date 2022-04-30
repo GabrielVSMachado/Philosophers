@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/29 17:18:15 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 22:46:15 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	make_action(t_philo *philosopher, t_mls time_action)
 	t_mls	future;
 
 	future = get_current_time() + time_action;
-	while (get_current_time() - time_action <= future)
+	while (get_current_time() < future)
 	{
 		if (must_die(philosopher))
 			die(philosopher);
@@ -29,7 +29,6 @@ void	make_action(t_philo *philosopher, t_mls time_action)
 
 int	must_die(t_philo *philosopher)
 {
-	usleep(100);
 	return (get_current_time() - philosopher->last_meal
 		>= philosopher->table->die || philosopher->table->starved_together);
 }
