@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:04:25 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/29 21:55:19 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 19:08:40 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,22 @@ t_mls	get_current_time(void)
 	return (mls_time);
 }
 
+void	print_msg(char *msg, t_philo *philosopher)
+{
+	pthread_mutex_lock(&philosopher->table->printlock);
+	printf(msg, get_current_time() - philosopher->start_sim,
+		philosopher->seat);
+	pthread_mutex_unlock(&philosopher->table->printlock);
+}
+
 void	get_fork_in_position(t_philo *philosophers, int position)
 {
-	pthread_mutex_lock(&philosophers->table->printlock);
-	printf("%ld %d has taken a fork\n",
-		get_current_time() - philosophers->start_sim,
-		philosophers->seat);
-	pthread_mutex_unlock(&philosophers->table->printlock);
 	pthread_mutex_lock(&philosophers->table->forks[position]);
 }
 
 void	leave_fork(pthread_mutex_t *forks, int position)
 {
 	pthread_mutex_unlock(&forks[position]);
-}
-
-void	wait_until_its_time(t_philo *philosophers)
-{
-	t_semaphoro	*time;
-	int			its_your_time;
-
-	time = philosophers->table->semaphoro;
-	pthread_mutex_lock(&philosophers->table->check_your_time);
-	its_your_time = !time[philosophers->seat - 1].smp;
-	pthread_mutex_unlock(&philosophers->table->check_your_time);
-	while (its_your_time)
-	{
-		if (must_die(philosophers))
-			die(philosophers);
-		pthread_mutex_lock(&philosophers->table->check_your_time);
-		its_your_time = !time[philosophers->seat - 1].smp;
-		pthread_mutex_unlock(&philosophers->table->check_your_time);
-	}
-	if (must_die(philosophers))
-		die(philosophers);
 }
 
 void	change_semaphoros(struct s_table *table, int seat)

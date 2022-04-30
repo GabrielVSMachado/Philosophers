@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:22:23 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/29 17:12:59 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 19:26:16 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include <pthread.h>
 #include <string.h>
 
-static t_semaphoro	*init_semaphoros(int n_philophers)
+static t_waiter	*init_semaphoros(int n_philophers)
 {
-	t_semaphoro	*semaphoro;
+	t_waiter	*semaphoro;
 	int			_;
 	int			tmp;
 
-	semaphoro = malloc(sizeof(t_semaphoro) * n_philophers);
+	semaphoro = malloc(sizeof(t_waiter) * n_philophers);
 	if (!semaphoro)
 		return (NULL);
 	_ = -1;
@@ -67,6 +67,7 @@ static t_philo	*init_philosophers(char *argv[], int n_philophers,
 		philosophers[_].last_meal = 0;
 		philosophers[_].table = table;
 		philosophers[_].n_eat = n_eat;
+		philosophers[_].thinking = 0;
 	}
 	return (philosophers);
 }
@@ -86,13 +87,10 @@ static struct s_table	*prepare_table(int n_philophers, char *argv[])
 	}
 	table->forks = init_mutex(n_philophers);
 	if (!table->forks)
-	{
-		free(table->semaphoro);
-		free(table);
-		return (NULL);
-	}
+		return (free(table->semaphoro), free(table), NULL);
 	pthread_mutex_init(&table->printlock, NULL);
 	pthread_mutex_init(&table->check_your_time, NULL);
+	pthread_mutex_init(&table->check_is_dead, NULL);
 	table->starved_together = 0;
 	table->n_philophers = n_philophers;
 	table->die = ft_atoi(argv[2]);
