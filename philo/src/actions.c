@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/29 21:54:38 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/29 22:55:14 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	die(t_philo *philosophers)
 {
 	if (!philosophers->table->starved_together)
 	{
-		pthread_mutex_lock(&philosophers->table->printlock);
 		philosophers->table->starved_together = 1;
 		pthread_mutex_lock(&philosophers->table->printlock);
 		printf("%ld %d died\n", get_current_time() - philosophers->start_sim,
@@ -36,6 +35,8 @@ void	start_think(t_philo *philosophers)
 		get_current_time() - philosophers->start_sim,
 		philosophers->seat);
 	pthread_mutex_unlock(&philosophers->table->printlock);
+	if (must_die(philosophers))
+		die(philosophers);
 }
 
 void	get_forks(t_philo *philosophers)
@@ -74,11 +75,11 @@ void	start_eat(t_philo *philosophers)
 	printf("%ld %d is eating\n",
 		get_current_time() - philosophers->start_sim, seat);
 	pthread_mutex_unlock(&philosophers->table->printlock);
+	leave_fork(philosophers->table->forks, left);
+	leave_fork(philosophers->table->forks, right);
 	make_action(philosophers, philosophers->table->eat);
 	if (must_die(philosophers))
 		die(philosophers);
-	leave_fork(philosophers->table->forks, left);
-	leave_fork(philosophers->table->forks, right);
 	change_semaphoros(philosophers->table, philosophers->seat);
 	philosophers->n_eat -= (philosophers->n_eat > 0);
 	if (cant_eat_anymore(philosophers))
