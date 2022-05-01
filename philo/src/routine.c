@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:32:39 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 19:30:32 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/05/02 00:19:14 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	*dont_starve_together(void *block)
 	waiter = philosophers->table->semaphoro;
 	while (1)
 	{
-		if (!philosophers->thinking)
-			start_think(philosophers);
 		pthread_mutex_lock(&philosophers->table->check_your_time);
 		its_your_time = waiter[philosophers->seat - 1].smp;
 		pthread_mutex_unlock(&philosophers->table->check_your_time);
@@ -67,6 +65,8 @@ void	*dont_starve_together(void *block)
 			start_eat(philosophers);
 			start_sleep(philosophers);
 		}
+		if (!philosophers->thinking)
+			start_think(philosophers);
 		if (must_die(philosophers))
 			die(philosophers);
 	}

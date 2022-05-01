@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:09:16 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 20:39:17 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/05/02 00:19:48 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	die(t_philo *philosophers)
 	if (!philosophers->table->starved_together)
 	{
 		philosophers->table->starved_together = 1;
-		print_msg("%ld %d die\n", philosophers);
+		print_msg("%ld %d died\n", philosophers);
 	}
 	pthread_mutex_unlock(&philosophers->table->check_is_dead);
 	pthread_exit(NULL);

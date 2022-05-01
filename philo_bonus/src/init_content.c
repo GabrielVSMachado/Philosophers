@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 12:40:32 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/28 17:09:31 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/05/01 14:40:14 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static void	init_sem(struct s_table *table, int n_philosophers)
 	table->starved_together = sem_open("starved_together", O_CREAT | O_EXCL,
 			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP, 0);
 	table->your_time = sem_open("your_time", O_CREAT | O_EXCL,
-			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP, (int)(n_philosophers / 2)
-			+ (n_philosophers == 1));
+			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP, ((int)(n_philosophers / 2)
+				+ (n_philosophers == 1)));
 }
 
 struct s_table	*init_table(int n_philosophers, char *const *argv)
