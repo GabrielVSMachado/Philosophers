@@ -25,7 +25,7 @@ override OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDLIBS)
 
 $(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLIBS)

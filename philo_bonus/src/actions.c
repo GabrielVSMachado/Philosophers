@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 11:11:01 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/27 21:35:55 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 21:17:39 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	start_eat(struct s_table *table)
 {
 	table->philosopher->last_meal = get_current_time();
 	print_msg(table, "%ld %d is eating\n");
-	usleep(table->eat * 1000);
+	make_action(&table, table->eat);
 	sem_post(table->forks);
 	sem_post(table->forks);
 	sem_post(table->your_time);
@@ -67,7 +67,7 @@ void	start_eat(struct s_table *table)
 void	start_sleep(struct s_table *table)
 {
 	print_msg(table, "%ld %d is sleeping\n");
-	usleep(table->sleep * 1000);
+	make_action(&table, table->eat);
 	if (must_die(table->philosopher->last_meal, table->die))
 		die(&table);
 }

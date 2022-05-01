@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 13:55:40 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/28 16:42:23 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/04/30 21:50:45 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,15 @@
 
 static void	*wait_until_die(void *block)
 {
-	struct s_thread	*thread;
+	struct s_table	*thread;
 	int				_;
 
-	thread = (struct s_thread *)block;
+	thread = (struct s_table *)block;
 	sem_wait(thread->starved_together);
 	_ = -1;
 	while (++_ < thread->n_philosophers)
-		if (thread->pids[_] != -1)
+		if (thread->pids[_] != 0)
 			kill(thread->pids[_], SIGKILL);
-	free(block);
 	return (NULL);
 }
 
@@ -42,24 +41,13 @@ static void	wait_all_eat(struct s_table *table)
 	_ = -1;
 	while (++_ < table->n_philosophers)
 		waitpid(table->pids[_], &ext, 0);
-	if (WIFEXITED(ext))
-		memset(table->pids, -1, sizeof(pid_t) * table->n_philosophers);
-	sem_post(table->starved_together);
 }
 
-static int	init_thread_monitoring(pid_t *pids, sem_t *starved_together,
-		int n_philosophers)
+static int	init_thread_monitoring(struct s_table **table)
 {
-	struct s_thread	*block;
 	pthread_t		monitoring;
 
-	block = malloc(sizeof(struct s_thread));
-	if (!block)
-		return (1);
-	block->n_philosophers = n_philosophers;
-	block->pids = pids;
-	block->starved_together = starved_together;
-	if (pthread_create(&monitoring, NULL, wait_until_die, block))
+	if (pthread_create(&monitoring, NULL, wait_until_die, *table))
 	{
 		write(STDERR_FILENO, "Error on thread create!\n", 25);
 		return (1);
@@ -91,8 +79,8 @@ int	dont_starved_together(struct s_table *table, char *n_eat)
 			}
 		}
 	}
-	if (init_thread_monitoring(table->pids, table->starved_together,
-			table->n_philosophers))
+	if (init_thread_monitoring(&table))
 		return (1);
-	return (wait_all_eat(table), 0);
+	wait_all_eat(table);
+	return (0);
 }
