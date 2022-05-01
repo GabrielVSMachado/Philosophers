@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 13:55:40 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 21:50:45 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/05/01 14:42:43 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int	dont_starved_together(struct s_table *table, char *n_eat)
 			while (1)
 			{
 				sem_wait(table->your_time);
-				start_think(table);
 				get_forks(table);
 				start_eat(table);
 				start_sleep(table);
+				start_think(table);
 			}
 		}
 	}

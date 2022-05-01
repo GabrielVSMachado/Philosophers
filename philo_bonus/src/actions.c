@@ -6,7 +6,7 @@
 /*   By: gvitor-s <gvitor-s>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 11:11:01 by gvitor-s          #+#    #+#             */
-/*   Updated: 2022/04/30 21:17:39 by gvitor-s         ###   ########.fr       */
+/*   Updated: 2022/05/01 14:47:19 by gvitor-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	die(struct s_table **table)
 {
 	sem_wait((*table)->print);
-	printf("%ld %d die\n",
+	printf("%ld %d died\n",
 		get_current_time() - (*table)->philosopher->start_sim,
 		(*table)->philosopher->seat);
 	sem_post((*table)->starved_together);
@@ -29,10 +29,13 @@ void	die(struct s_table **table)
 void	start_think(struct s_table *table)
 {
 	print_msg(table, "%ld %d is thinking\n");
+	usleep((table->die - (table->eat + table->sleep)) / 2);
 }
 
 void	get_forks(struct s_table *table)
 {
+	if (must_die(table->philosopher->last_meal, table->die))
+		die(&table);
 	sem_wait(table->forks);
 	print_msg(table, "%ld %d has taken a fork\n");
 	if (table->n_philosophers == 1)
@@ -42,8 +45,6 @@ void	get_forks(struct s_table *table)
 	}
 	sem_wait(table->forks);
 	print_msg(table, "%ld %d has taken a fork\n");
-	if (must_die(table->philosopher->last_meal, table->die))
-		die(&table);
 }
 
 void	start_eat(struct s_table *table)
